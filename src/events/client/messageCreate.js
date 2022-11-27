@@ -6,12 +6,15 @@ module.exports = {
         if (message.author.bot) return;
         const storedBalance = await client.fetchBalance(message.author.id, message.guild.id);
 
-        const luck = Math.floor(Math.random() * (20));
+        const luck = await client.randomNum(20, 0);
         if (luck !== 0) return;
 
-        const randomAmount = Math.floor(Math.random() * (4)) + 1;
+        const randomAmount = await client.randomNum(4, 1);
 
-        await Balance.findOneAndUpdate({ _id: storedBalance._id }, { balance: storedBalance.balance + randomAmount });
+        storedBalance.balance = storedBalance.balance + randomAmount;
+        storedBalance.xp = storedBalance.xp + 10;
+
+        await storedBalance.save().catch(console.error);
         await client.textReact(message, 'cat');
     }
 }

@@ -83,12 +83,12 @@ const balanceSchema = new Schema({
         },
         dailyUse: {
             get() {
-                return this.dailyUseTimeout + 86400000 > new Date()
+                return Date.parse(new Date(this.dailyUseTimeout)) + 86400000 < Date.parse(new Date());
             }
         },
         weaponUse: {
             get() {
-                return this.dailyUseTimeout + 60000 > new Date()
+                return Date.parse(new Date(this.weaponUseTimeout)) + 86400000 < Date.parse(new Date());
             }
         }
     }
