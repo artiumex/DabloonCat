@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const about = require('../universal/about');
+const cooldowns = require('../universal/cooldowns');
 const { classList, raceList, weaponList } = about;
 // Class
 // 0=Peasant, 1=Arcane, 2=Trickster, 3=Warrior, 4=Keeper
@@ -38,7 +39,7 @@ const balanceSchema = new Schema({
     virtuals: {
         class: {
             get() {
-                return classList[this.classId];
+                return classList[this.classId].name;
             },
             set(v) {
                 this.classId = v;
@@ -65,16 +66,15 @@ const balanceSchema = new Schema({
                 return 10 + about.mod(this.prowess);
             }
         },
+        luck: {
+            get() {
+                return 5 + about.mod(this.awe) >= 0 ? 5 + about.mod(this.awe) : 1;
+            }
+        },
         hp_max: {
             get() {
-                return 8 + about.favored(this);
+                return 5 + (8 * (this.level - 1)) + about.mod(this.mettle);
             },
-        },
-        hp_update: {
-            set(v) {
-                if (this.hp - v < 0) this.hp = 0;
-                else this.hp -= v;
-            }
         },
         favored_mod: {
             get() {
@@ -83,12 +83,33 @@ const balanceSchema = new Schema({
         },
         dailyUse: {
             get() {
-                return Date.parse(new Date(this.dailyUseTimeout)) + 86400000 < Date.parse(new Date());
+                return cooldowns.isReady(this.dailyUseTimeout, cooldowns.daily);
             }
         },
         weaponUse: {
             get() {
-                return Date.parse(new Date(this.weaponUseTimeout)) + 86400000 < Date.parse(new Date());
+                return cooldowns.isReady(this.weaponUseTimeout, cooldowns.weapon);
+            }
+        },
+        attributes: {
+            get() {
+                return [
+                    { name: 'Prowess', value: this.prowess, mod: about.mod(this.prowess) },
+                    { name: 'Mettle', value: this.mettle, mod: about.mod(this.mettle) },
+                    { name: 'Awe', value: this.awe, mod: about.mod(this.awe) },
+                    { name: 'Judgement', value: this.judgement, mod: about.mod(this.judgement) },
+                    { name: 'Wyrd', value: this.wyrd, mod: about.mod(this.wyrd) },
+                ]
+            }
+        },
+        level: {
+            get() {
+                return about.calc_level(this.xp);
+            }
+        },
+        handle: {
+            get() {
+                return `Level ${this.level} ${this.race} ${this.class}`
             }
         }
     }

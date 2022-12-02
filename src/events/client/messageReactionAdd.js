@@ -6,6 +6,16 @@ module.exports = {
     async execute(reaction, user, client) {
         if (user.bot || reaction.message.author.bot || reaction.message.author.id == user.id) return;
 
+        if (['❤️','🤨','🤩'].includes(reaction.emoji.name)) {
+            const userBalance = await client.fetchBalance(user.id, reaction.message.guild.id);
+            const targetBalance = await client.fetchBalance(reaction.message.author.id, reaction.message.guild.id);
+            userBalance.balance += 4;
+            targetBalance.balance += 2;
+            await targetBalance.save().catch(console.error);
+            await userBalance.save().catch(console.error);
+            return; 
+        }
+
         let attackEmoji = Object.keys(weapons.emoji).find(e=>weapons.emoji[e].id == reaction.emoji.name);
         if (attackEmoji) attackEmoji = weapons.emoji[attackEmoji];
         else return;
@@ -13,31 +23,30 @@ module.exports = {
         if (attackEmoji.class !== userBalance.classId) return;
         const targetBalance = await client.fetchBalance(reaction.message.author.id, reaction.message.guild.id);
         
+        if (userBalance.weaponUse) userBalance.weaponUseTimeout = new Date();
+        else return reaction.message.channel.send(`${user} tried to attack ${reaction.message.author}, but their ${attackEmoji.text} **${attackEmoji.name}** failed them in their time of need!`)
+
         const attackRoll = await client.randomNum(20) + userBalance.favored_mod;
-        const damageRoll = await client.randomNum(5);
-        const stealRoll = await client.randomNum(3);
+        const damageRoll = await client.randomNum(targetBalance.hp);
+        var stealRoll = await client.randomNum(targetBalance.balance / (7 - userBalance.favored_mod));
         
         if (attackRoll >= targetBalance.ac) {
             targetBalance.hp = targetBalance.hp - damageRoll;
             if (targetBalance.hp <= 0) {
                 targetBalance.hp = targetBalance.hp_max;
-                if (targetBalance.balance >= stealRoll) {
-                    targetBalance.balance -= stealRoll;
-                    userBalance.balance += stealRoll;
-                    reaction.message.channel.send(`${user.tag} killed ${reaction.message.author.tag} using ${attackEmoji.name}, and stole ${await client.toDisplay('balance',stealRoll)}.`);
-                } else {
-                    reaction.message.channel.send(`${user.tag} killed ${reaction.message.author.tag} using ${attackEmoji.name}, dealing ${damageRoll} damage.`);
-                }
+                if (stealRoll >= targetBalance.balance) stealRoll = targetBalance.balance
+                targetBalance.balance -= stealRoll;
+                userBalance.balance += stealRoll;
+                reaction.message.channel.send(`${user} killed ${reaction.message.author} using **${attackEmoji.act}**, and stole ${await client.toDisplay('balance',stealRoll)}.`);
             } else {
-                reaction.message.channel.send(`${user.tag} dealt ${damageRoll} damage to ${reaction.message.author.tag} using ${attackEmoji.name}.`);
+                reaction.message.channel.send(`${user} dealt ${damageRoll} damage to ${reaction.message.author} using **${attackEmoji.act}**.`);
             }
-            targetBalance.save().catch(console.error);
-            userBalance.save().catch(console.error);
+            await targetBalance.save().catch(console.error);
+            await userBalance.save().catch(console.error);
         } else {
-            reaction.message.channel.send(`${user.tag} attempted to hit ${reaction.message.author.tag} using ${attackEmoji.name}, but missed.`);
+            userBalance.save().catch(console.error);
+            reaction.message.channel.send(`${user} attempted to hit ${reaction.message.author} using **${attackEmoji.act}**, but missed.`);
         }
-
-        
 
         // await reaction.remove().catch(console.error);
     }

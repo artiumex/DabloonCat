@@ -8,13 +8,15 @@ module.exports = {
         const storedBalance = await client.getBalance(interaction.user.id, interaction.guild.id);
 
         if (storedBalance.dailyUse) {
-            dMoney = await client.randomNum(10);
+            const dMoney = await client.randomNum(10) + 5;
 
-            storedBalance.balance = storedBalance.balance + dMoney;
             storedBalance.dailyUseTimeout = new Date();
+            storedBalance.balance = storedBalance.balance + dMoney;
+            storedBalance.hp = storedBalance.hp_max;
+            storedBalance.xp += 50;
             storedBalance.save().catch(console.error);
             interaction.reply({
-                content: `The dabloon gods have granted you ${await client.toDisplay('balance', dMoney)}`
+                content: `The dabloon gods have granted you ${await client.toDisplay('balance', dMoney)} and restored your health!`
             });
         } else {
             interaction.reply({

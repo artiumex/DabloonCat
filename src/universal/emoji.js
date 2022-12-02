@@ -14,5 +14,9 @@ module.exports = {
     cat: {
         id: '1045735129395507280',
         text: '<:dablooncat:1045735129395507280>',
+    },
+    alert: {
+        id: '🚨',
+        text: ':rotating_light:',
     }
 }

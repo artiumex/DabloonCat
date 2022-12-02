@@ -6,10 +6,10 @@ module.exports = {
         if (message.author.bot) return;
         const storedBalance = await client.fetchBalance(message.author.id, message.guild.id);
 
-        const luck = await client.randomNum(20, 0);
+        const luck = await client.randomNum(10, 1, 0);
         if (luck !== 0) return;
 
-        const randomAmount = await client.randomNum(4, 1);
+        const randomAmount = await client.randomNum(4);
 
         storedBalance.balance = storedBalance.balance + randomAmount;
         storedBalance.xp = storedBalance.xp + 10;

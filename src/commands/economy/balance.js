@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const about = require('../../universal/about');
+const cooldowns = require('../../universal/cooldowns');
  
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,41 +17,35 @@ module.exports = {
         else {
             const embed = new EmbedBuilder()
                 .setTitle(`${selectedUser.username}`)
-                // .setDescription(`${storedBalance.class} ${storedBalance.race}`)
+                .setDescription(storedBalance.handle)
                 .setTimestamp()
                 .addFields([
-                    // {
-                    //     name: 'Health',
-                    //     value: `${storedBalance.hp}/${storedBalance.hp_max}`
-                    // },
-                    // {
-                    //     name: 'Prowess',
-                    //     value: `${storedBalance.prowess}`
-                    // },
-                    // {
-                    //     name: 'Mettle',
-                    //     value: `${storedBalance.mettle}`
-                    // },
-                    // {
-                    //     name: 'Awe',
-                    //     value: `${storedBalance.awe}`
-                    // },
-                    // {
-                    //     name: 'Judgement',
-                    //     value: `${storedBalance.judgement}`
-                    // },
-                    // {
-                    //     name: 'Wyrd',
-                    //     value: `${storedBalance.wyrd}`
-                    // },
+                    {
+                        name: 'Health',
+                        value: `${storedBalance.hp}/${storedBalance.hp_max}`
+                    },
+                    {
+                        name: 'XP',
+                        value: `Level ${storedBalance.level}/${storedBalance.xp} xp`
+                    },
+                    {
+                        name: 'Weapon Cooldown',
+                        value: `${cooldowns.parseReadable(storedBalance.weaponUseTimeout, cooldowns.weapon)}`
+                    },
+                    {
+                        name: 'Dailies Cooldown',
+                        value: `${cooldowns.parseReadable(storedBalance.dailyUseTimeout, cooldowns.daily)}`
+                    },
                     {
                         name: 'Coin',
                         value: `${await client.toDisplay('balance', storedBalance.balance)}`
                     }
-                ])
+                ]
+                // .concat(storedBalance.attributes.map(e => { return { name: e.name, value: e.value.toString() } }))
+                )
                 .setFooter({
-                    text: client.user.tag,
-                    iconURL: client.user.displayAvatarURL()
+                    text: interaction.user.tag,
+                    iconURL: interaction.user.displayAvatarURL()
                 });
             
             await interaction.reply({
