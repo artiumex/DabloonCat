@@ -13,7 +13,6 @@ module.exports = (client) => {
             storedBalance = await new Balance({
                 _id: Types.ObjectId(),
                 userId: userId,
-                guildId: guildId,
                 prowess: randAttribute(),
                 mettle: randAttribute(),
                 awe: randAttribute(),
@@ -22,7 +21,7 @@ module.exports = (client) => {
             })
             storedBalance.hp = storedBalance.hp_max;
             await storedBalance.save().then(async balance => {
-                console.log(`[Balance Created] UserID: ${balance.userId}, GuildID: ${balance.guildId}`);
+                console.log(`[Balance Created] UserID: ${balance.userId}`);
             }).catch(console.error);
             return storedBalance;
         } else return storedBalance;
