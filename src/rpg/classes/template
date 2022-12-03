@@ -1,0 +1,53 @@
+/* 
+- name
+name of the class
+
+-id
+lowercase identifier of class
+
+- desc
+description of the class
+
+-hit dice
+
+- weapon
+-- name
+name of weapon
+
+--act
+the action associated with the weapon
+ex. "X defeated Y using {Force/Magic/etc.}"
+
+--rolls
+---to_hit
+the die roll to hit
+
+---damage
+amount of damage roll
+
+--emoji
+---text
+the text form of the emoji used to fight with
+
+---id
+the id or unicode of the emoji used to fight with
+*/
+
+module.exports = {
+    name: "",
+    id: "",
+    desc: "",
+    hit_dice: "",
+    weapon: {
+        name: "", 
+        act: "",
+        rolls: {
+            to_hit: "",
+            damage: "",
+        },
+        emoji: {
+            text: "",
+            id: "",
+        }
+    }
+}
