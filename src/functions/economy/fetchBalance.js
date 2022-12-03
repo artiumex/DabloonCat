@@ -6,8 +6,8 @@ const randAttribute = () => {
 }
 
 module.exports = (client) => {
-    client.fetchBalance = async (userId, guildId) => {
-        let storedBalance = await Balance.findOne({ userId: userId, guildId: guildId });
+    client.fetchBalance = async (userId) => {
+        let storedBalance = await Balance.findOne({ userId: userId });
 
         if (!storedBalance) {
             storedBalance = await new Balance({

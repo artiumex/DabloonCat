@@ -4,7 +4,7 @@ module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
         if (message.author.bot) return;
-        const storedBalance = await client.fetchBalance(message.author.id, message.guild.id);
+        const storedBalance = await client.fetchBalance(message.author.id);
 
         const luck = await client.randomNum(10, 1, 0);
         if (luck !== 0) return;

@@ -7,8 +7,8 @@ module.exports = {
         if (user.bot || reaction.message.author.bot || reaction.message.author.id == user.id) return;
 
         if (['❤️','🤨','🤩'].includes(reaction.emoji.name)) {
-            const userBalance = await client.fetchBalance(user.id, reaction.message.guild.id);
-            const targetBalance = await client.fetchBalance(reaction.message.author.id, reaction.message.guild.id);
+            const userBalance = await client.fetchBalance(user.id);
+            const targetBalance = await client.fetchBalance(reaction.message.author.id);
             userBalance.balance += 4;
             targetBalance.balance += 2;
             await targetBalance.save().catch(console.error);
@@ -19,9 +19,9 @@ module.exports = {
         let attackEmoji = Object.keys(weapons.emoji).find(e=>weapons.emoji[e].id == reaction.emoji.name);
         if (attackEmoji) attackEmoji = weapons.emoji[attackEmoji];
         else return;
-        const userBalance = await client.fetchBalance(user.id, reaction.message.guild.id);
+        const userBalance = await client.fetchBalance(user.id);
         if (attackEmoji.class !== userBalance.classId) return;
-        const targetBalance = await client.fetchBalance(reaction.message.author.id, reaction.message.guild.id);
+        const targetBalance = await client.fetchBalance(reaction.message.author.id);
         
         if (userBalance.weaponUse) userBalance.weaponUseTimeout = new Date();
         else return reaction.message.channel.send(`${user} tried to attack ${reaction.message.author}, but their ${attackEmoji.text} **${attackEmoji.name}** failed them in their time of need!`)

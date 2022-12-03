@@ -5,7 +5,7 @@ module.exports = {
         .setName('dailies')
         .setDescription('Get yo stuff!'),
     async execute(interaction, client) {
-        const storedBalance = await client.getBalance(interaction.user.id, interaction.guild.id);
+        const storedBalance = await client.getBalance(interaction.user.id);
 
         if (storedBalance.dailyUse) {
             const dMoney = await client.randomNum(10) + 5;

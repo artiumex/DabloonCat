@@ -18,7 +18,7 @@ const { classList, raceList, weaponList } = about;
 
 const balanceSchema = new Schema({
     _id: Schema.Types.ObjectId,
-    guildId: String,
+    // guildId: String,
     userId: String,
     balance: { type: Number, default: 0 },
     classId: { type: Number, default: 0, min: 0, max: classList.length-1 },

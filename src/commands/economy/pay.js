@@ -8,7 +8,7 @@ module.exports = {
         .addUserOption(option => option.setName('target').setDescription('The user you\'d like to pay').setRequired(true))
         .addNumberOption(option => option.setName('amount').setDescription('The amount you would like to send.').setRequired(true)),
     async execute(interaction, client) {
-        const userStoredBalance = await client.fetchBalance(interaction.user.id, interaction.guild.id);
+        const userStoredBalance = await client.fetchBalance(interaction.user.id);
         const amount = interaction.options.getNumber('amount');
         const selectedUser = interaction.options.getUser('target');
 
@@ -29,13 +29,13 @@ module.exports = {
             ephemeral: true,
         });
         
-        const selectedUserBalance = await client.fetchBalance(selectedUser.id, interaction.guild.id);
+        const selectedUserBalance = await client.fetchBalance(selectedUser.id);
         await Balance.findOneAndUpdate({ _id: userStoredBalance._id }, { balance: userStoredBalance.balance - amount });
         await Balance.findOneAndUpdate({ _id: selectedUserBalance._id }, { balance: selectedUserBalance.balance + amount });
 
         await interaction.reply({
             content: `You've sent ${await client.toDisplay('balance', amount)} to ${selectedUser.tag}`,
-            ephemeral: true,
+            // ephemeral: true,
         })
     }
 }

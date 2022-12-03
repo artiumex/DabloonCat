@@ -8,7 +8,7 @@ module.exports = {
         .setName('path')
         .setDescription('Allows you to redefine your path!'),
     async execute(interaction, client) {
-        const storedBalance = await client.getBalance(interaction.user.id, interaction.guild.id);
+        const storedBalance = await client.getBalance(interaction.user.id);
         const embed = new EmbedBuilder()
             .setTitle(await client.toDisplay('alert', 'Big Decisions!'))
             // .setDescription(`$soem desc`)
