@@ -2,13 +2,13 @@ module.exports = {
     name: "Trickster",
     id: "trickster",
     desc: "Grants you power over trickery.",
-    hit_dice: "1d8",
+    hit_dice: "lvld8",
     weapon: {
         name: "Lockpick", 
         act: "Trickery",
         rolls: {
-            to_hit: "1d20 + prof + mettle",
-            damage: "1d4 + mettle",
+            to_hit: "1d20 + prof &m",
+            damage: "1d4 &m",
         },
         emoji: {
             text: ":paperclip:",

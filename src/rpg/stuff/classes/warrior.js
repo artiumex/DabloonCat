@@ -2,12 +2,12 @@ module.exports = {
     name: "Warrior",
     id: "warrior",
     desc: "Your immense strength allows you to fight",
-    hit_dice: "1d10",
+    hit_dice: "lvld10",
     weapon: {
         name: "Sword", 
         act: "Violence",
         rolls: {
-            to_hit: "1d20 + prof + prowess",
+            to_hit: "1d20 + prof &p",
             damage: "2d6",
         },
         emoji: {

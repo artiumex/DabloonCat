@@ -13,7 +13,7 @@ module.exports = {
         const selectedUser = interaction.options.getUser('target');
 
         if (selectedUser.bot) return interaction.reply({
-            content: "You cannot send dabloons to a bot, or yourself!",
+            content: "You cannot send dabloons to a bot!",
             ephemeral: true,
         });
         else if (selectedUser.id == interaction.user.id) return interaction.reply({

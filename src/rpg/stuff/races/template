@@ -1,0 +1,12 @@
+module.exports = {
+    name: "",
+    id: "",
+    desc: "",
+    bonuses: {
+        p: 0,
+        m: 0,
+        a: 0,
+        j: 0,
+        w: 0,
+    },
+}

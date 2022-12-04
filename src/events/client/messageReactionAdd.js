@@ -1,5 +1,6 @@
 const Balance = require('../../schemas/balance');
-const weapons = require('../../universal/weapons');
+const about = require('../../universal/about');
+const attacky = require('../../rpg/functions/attack');
 
 module.exports = {
     name: 'messageReactionAdd',
@@ -16,38 +17,21 @@ module.exports = {
             return; 
         }
 
-        let attackEmoji = Object.keys(weapons.emoji).find(e=>weapons.emoji[e].id == reaction.emoji.name);
-        if (attackEmoji) attackEmoji = weapons.emoji[attackEmoji];
-        else return;
+        const classy = about.classes.arr.find(e=>e.weapon.emoji.id == reaction.emoji.name);
+        if (!classy) return;
         const userBalance = await client.fetchBalance(user.id);
-        if (attackEmoji.class !== userBalance.classId) return;
+        if (classy.id !== userBalance.classId) return;
         const targetBalance = await client.fetchBalance(reaction.message.author.id);
-        
-        if (userBalance.weaponUse) userBalance.weaponUseTimeout = new Date();
-        else return reaction.message.channel.send(`${user} tried to attack ${reaction.message.author}, but their ${attackEmoji.text} **${attackEmoji.name}** failed them in their time of need!`)
 
-        const attackRoll = await client.randomNum(20) + userBalance.favored_mod;
-        const damageRoll = await client.randomNum(targetBalance.hp);
-        var stealRoll = await client.randomNum(targetBalance.balance / (7 - userBalance.favored_mod));
-        
-        if (attackRoll >= targetBalance.ac) {
-            targetBalance.hp = targetBalance.hp - damageRoll;
-            if (targetBalance.hp <= 0) {
-                targetBalance.hp = targetBalance.hp_max;
-                if (stealRoll >= targetBalance.balance) stealRoll = targetBalance.balance
-                targetBalance.balance -= stealRoll;
-                userBalance.balance += stealRoll;
-                reaction.message.channel.send(`${user} killed ${reaction.message.author} using **${attackEmoji.act}**, and stole ${await client.toDisplay('balance',stealRoll)}.`);
-            } else {
-                reaction.message.channel.send(`${user} dealt ${damageRoll} damage to ${reaction.message.author} using **${attackEmoji.act}**.`);
-            }
-            await targetBalance.save().catch(console.error);
-            await userBalance.save().catch(console.error);
-        } else {
-            userBalance.save().catch(console.error);
-            reaction.message.channel.send(`${user} attempted to hit ${reaction.message.author} using **${attackEmoji.act}**, but missed.`);
-        }
+        const attacks = await attacky(client, {
+            weapon: classy.weapon,
+            attacker: user.toString(),
+            target: reaction.message.author.toString(),
+            attackProf: userBalance,
+            targetProf: targetBalance,
+        });
 
+        await reaction.message.channel.send({ embeds: attacks })
         // await reaction.remove().catch(console.error);
     }
 }

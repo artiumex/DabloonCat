@@ -9,15 +9,20 @@ module.exports = {
         .setDescription('Allows you to redefine your path!'),
     async execute(interaction, client) {
         const storedBalance = await client.getBalance(interaction.user.id);
-        const embed = new EmbedBuilder()
+        const embeds = [new EmbedBuilder()
             .setTitle(await client.toDisplay('alert', 'Big Decisions!'))
             // .setDescription(`$soem desc`)
             .setTimestamp()
-            .addFields(storedBalance.attributes.map(e => { return { name: e.name, value: e.value.toString() } }))
+            .addFields(storedBalance.attributes.arr.map(e => { 
+                return { 
+                    name: e.name, 
+                    value: e.display,
+                } 
+            }))
             .setFooter({
                 text: client.user.tag,
                 iconURL: client.user.displayAvatarURL()
-            });
+            })];
         if (storedBalance.balance < pathCost || storedBalance.level < 2) return interaction.reply({
             content: `You need to be at least Level 2 and have ${await client.toDisplay('balance', pathCost)} to change paths!`,
             ephemeral: true,
@@ -28,19 +33,25 @@ module.exports = {
 				new SelectMenuBuilder()
 					.setCustomId('select')
 					.setPlaceholder('Nothing selected')
-					.addOptions(about.classList.map((e,i) => {return { label: e.name, description: e.desc, value: `${e.name}/${i}` }})),
+					.addOptions(about.classes.arr.map((e,i) => {
+                        return { 
+                            label: e.name, 
+                            description: `${e.desc}`, 
+                            value: e.id 
+                        }
+                    })),
 			);
-            const reply = await interaction.reply({ embeds: [embed], components: [row], fetchReply: true });
+            const reply = await interaction.reply({ embeds: embeds, components: [row], fetchReply: true });
 
             const collector = reply.createMessageComponentCollector({ componentType: ComponentType.SelectMenu, time: 30000 });
 
             collector.on('collect', async i => {
                 if (i.user.id === interaction.user.id) {
-                    const choice = parseInt(i.values[0].split('/')[1],10);
+                    const choice = i.values[0];
                     storedBalance.classId = choice;
                     storedBalance.balance = storedBalance.balance - pathCost;
                     await storedBalance.save().catch(console.error);
-                    i.reply(`${i.user} chose to be a **${i.values[0].split('/')[0]}**!`);
+                    i.reply(`${i.user} chose to be a **${about.classes.map.get(i.values[0]).name}**!`);
                 } else {
                     i.reply({ content: `You can do **/path** to change your own path!`, ephemeral: true });
                 }
