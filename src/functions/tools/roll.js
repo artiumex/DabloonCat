@@ -1,7 +1,7 @@
 const about = require('../../universal/about');
 
 module.exports = (client) => {
-    client.roll = (profile, note) => {
+    client.roll = (note, profile = false) => {
         return about.roll(note, profile);
     }
 }
