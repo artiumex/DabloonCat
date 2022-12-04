@@ -8,7 +8,7 @@ module.exports = {
         const storedBalance = await client.getBalance(interaction.user.id);
 
         if (storedBalance.dailyUse) {
-            const dMoney = await client.randomNum(10) + 5;
+            const dMoney = (client.roll(`lvld10 &m`, storedBalance)).total;
 
             storedBalance.dailyUseTimeout = new Date();
             storedBalance.balance = storedBalance.balance + dMoney;

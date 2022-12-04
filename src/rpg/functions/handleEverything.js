@@ -1,6 +1,14 @@
+const chalk = require('chalk');
 const fs = require('fs');
 
+const out = (master) => {
+    const size = `Successfully loaded ${master.arr.length} ${master.type}: `;
+    const list = master.arr.map(e=>e.name).join(', ');
+    console.log(chalk.blue(size)+chalk.yellow(`[ ${list} ]`));
+}
+
 const classMaster = {
+    type: "Classes",
     arr: [],
     map: new Map(),
 }
@@ -12,8 +20,10 @@ for (const file of classFiles) {
     classMaster.map.set(classObj.id, classObj);
     classMaster.arr.push(classObj);
 }
+out(classMaster);
 
 const raceMaster = {
+    type: "Races",
     arr: [],
     map: new Map(),
 }
@@ -25,8 +35,10 @@ for (const file of raceFiles) {
     raceMaster.map.set(obj.id, obj);
     raceMaster.arr.push(obj);
 }
+out(raceMaster);
 
 const godsMaster = {
+    type: "Gods",
     arr: [],
     map: new Map(),
 }
@@ -38,6 +50,7 @@ for (const file of godFiles) {
     godsMaster.map.set(obj.id, obj);
     godsMaster.arr.push(obj);
 }
+out(godsMaster);
 
 module.exports = {
     classes: classMaster,
