@@ -36,6 +36,9 @@ module.exports = (client) => {
                 await rest.put(Routes.applicationCommands(process.env.clientId), {
                     body: client.commandArray,
                 });
+                await rest.put(Routes.applicationGuildCommands(process.env.clientId, process.env.guildId), {
+                    body: [],
+                });
     
                 console.log("Successfully reloaded global application (/) commands.")
             } catch (error) {
