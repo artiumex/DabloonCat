@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("@discordjs/builders");
 
 module.exports = (client) => {
-    client.embedy = async(title, description, color = "black") => {
+    client.embedy = (title, description, color = "black") => {
         const output = new EmbedBuilder().setTitle(title).setDescription(description);
         switch (color) {
             case ("black"):
@@ -17,7 +17,7 @@ module.exports = (client) => {
                 output.setColor([0,255,255]);
                 break;
             case ("random"):
-                output.setColor(await client.randomNum(16777215, 0))
+                output.setColor(client.randomNum(16777215, 0))
                 break
         }
         return output;

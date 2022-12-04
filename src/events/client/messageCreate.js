@@ -6,8 +6,8 @@ module.exports = {
         if (message.author.bot) return;
         const storedBalance = await client.fetchBalance(message.author.id);
 
-        const luck = await client.randomNum(15, 1, 0);
-        if (luck !== 0) return;
+        const luck = await client.roll(`1d10`);
+        if (luck !== 10) return;
 
         const randomAmount = await client.randomNum(4);
 

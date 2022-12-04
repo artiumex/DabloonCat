@@ -6,7 +6,7 @@ const pathCost = 100;
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('path')
-        .setDescription('Allows you to redefine your path!'),
+        .setDescription('Allows you to choose your class and redefine your race!'),
     async execute(interaction, client) {
         const storedBalance = await client.getBalance(interaction.user.id);
         const embeds = [new EmbedBuilder()
