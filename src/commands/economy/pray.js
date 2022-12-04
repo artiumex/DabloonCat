@@ -39,8 +39,8 @@ module.exports = {
             
             if ((client.roll(userBalance, `1d4`)).total == 4) {
                 if (favored == userBalance.raceId) {
-                    const dabamt = (client.roll(userBalance, `1d10`)).total;
-                    const xpamt = (client.roll(userBalance, `1d10`)).total;
+                    const dabamt = (client.roll(`1d10`, userBalance)).total;
+                    const xpamt = (client.roll(`1d10`, userBalance)).total;
                     embeds.push(client.embedy(
                         `Favored!`,
                         `${name} looks down on you with favor in ${pronouns.possessive} eyes.\n${pronouns.subject} grants you ${client.toDisplay('balance', dabamt)} and ${xpamt} experience.`,
@@ -49,7 +49,7 @@ module.exports = {
                     userBalance.balance += dabamt;
                     userBalance.xpamt += xpamt;
                 } else {
-                    const dabamt = (client.roll(userBalance, `1d5`)).total;
+                    const dabamt = (client.roll(`1d5`, userBalance)).total;
                     embeds.push(client.embedy(
                         `Granted!`,
                         `${name} grants you ${client.toDisplay('balance', dabamt)}, but ${pronouns.subject} is not one to forget a favor.`,
