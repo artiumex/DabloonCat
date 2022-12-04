@@ -37,7 +37,7 @@ module.exports = {
                 client.embedy(`Holy Shit`, `${i.user} begged to **${name}**`)
             ];
             
-            if ((client.roll(userBalance, `1d4`)).total == 4) {
+            if ((client.roll(`1d4`)).total == 4) {
                 if (favored == userBalance.raceId) {
                     const dabamt = (client.roll(`1d10`, userBalance)).total;
                     const xpamt = (client.roll(`1d10`, userBalance)).total;
