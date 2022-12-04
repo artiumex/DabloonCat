@@ -1,48 +1,65 @@
-const xp_level = [
-    0,
-    300,
-    900,
-    2700,
-    6500,
-    14000,
-    23000,
-    34000,
-    48000,
-    64000,
-    85000,
-    100000,
-    120000,
-    140000,
-    165000,
-    195000,
-    225000,
-    265000,
-    305000,
-    355000
-].reverse();
+const { DiceRoll } = require('@dice-roller/rpg-dice-roller');
+
+const xp_level = require('../rpg/configs/levels.json');
+const prof_adv = require('../rpg/configs/profs.json');
+const { classes, races } = require('../rpg/functions/handleEverything');
 
 module.exports = {
-    attributeList: ['Prowess', 'Mettle', 'Awe', 'Judgement', 'Wyrd'],
-    // classList: ['Peasant', 'Arcane', 'Trickster', 'Warrior', 'Keeper'],
-    classList: [
-        { name: "Peasant", desc: "Default classed. Ruled by Awe." },
-        { name: "Arcane", desc: "Allows you to wield magic. Rules by Wyrd." },
-        { name: "Trickster", desc: "Grants you power over trickery. Ruled by Mettle." },
-        { name: "Warrior", desc: "Your immense strength allows you to fight. Ruled by Prowess." },
-        { name: "Keeper", desc: "Allows you to control the forces of currency. Ruled by Judgement." },
-    ],
-    raceList: ['Human', 'Elf', 'Dwarf', 'Celestial'],
-    weaponList: ['none', 'Wand', 'Paperclip', 'Sword', 'Wallet'],
-    mod (attr) {
-        return Math.floor((attr - 10) / 2)
+    classes: classes,
+    races: races,
+    attributes(profile) {
+        const list = [
+            { name: "Prowess", id:"p", mid: "prowess" },
+            { name: "Mettle", id:"m", mid: "mettle" },
+            { name: "Awe", id:"a", mid: "awe" },
+            { name: "Judgement", id:"j", mid: "judgement" },
+            { name: "Wyrd", id:"w", mid: "wyrd" },
+        ];
+        const output = {
+            list: list,
+            arr: [],
+            map:  new Map(),
+        };
+        for (const a of list) {
+            const attr = { 
+                name: a.name, 
+                value: profile[a.mid], 
+                mod: profile[a.id],
+            }
+            attr.display = `${attr.value} (${attr.mod >= 0 ? `+${attr.mod}` : `-${Math.abs(attr.mod)}`})`
+            output.arr.push(attr);
+            output.map.set(a.id, attr);
+        }
+        return output;
     },
-    favored (profile, modNeeded = true) {
-        const vals = [profile.awe, profile.wyrd, profile.mettle, profile.prowess, profile.judgement];
-        const favoredValue = vals[profile.classId];
-        if (modNeeded) return this.mod(favoredValue);
-        else return favoredValue;
+    parseNote(profile, note) {
+        const addminus = (a) => {
+            return a >= 0 ? `+ ${a}` : `- ${Math.abs(a)}` 
+        }
+        const output = note
+        .replace('prof', profile.prof.toString())
+        .replace('lvl', profile.level.toString())
+        .replace('&p', addminus(profile.p))
+        .replace('&m', addminus(profile.m))
+        .replace('&a', addminus(profile.a))
+        .replace('&j', addminus(profile.j))
+        .replace('&w', addminus(profile.w));
+        return output;
+    },
+    roll (note, profile) {
+        return new DiceRoll(profile ? this.parseNote(profile, note) : note);
+    },
+    racialBonus(profile, attribute) {
+        const output = profile.race.bonuses[attribute];
+        return output;
+    },
+    mod(attr) {
+        return Math.floor((attr - 10) / 2);
     },
     calc_level (xp) {
         return xp_level.length - xp_level.findIndex(e => xp >= e);
+    },
+    calc_prof (lvl) {
+        return prof_adv.length - prof_adv.findIndex(e => lvl >= e);
     }
 }

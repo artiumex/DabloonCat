@@ -10,42 +10,52 @@ module.exports = {
     async execute(interaction, client) {
         const selectedUser = interaction.options.getUser('target') || interaction.user;
         const storedBalance = await client.getBalance(selectedUser.id);
+        const isSelf = interaction.options.getUser('target') ? false : true;
         if (!storedBalance) return await interaction.reply({
             content: `${selectedUser.tag} doesnt have a balance.`,
             ephemeral: true,
         });
         else {
-            const embed = new EmbedBuilder()
-                .setTitle(`${selectedUser.username}`)
-                .setDescription(storedBalance.handle)
+            var fields = [
+                {
+                    name: 'Health',
+                    value: `${storedBalance.hp}/${storedBalance.hp_max}`
+                },
+                {
+                    name: 'XP',
+                    value: `Level ${storedBalance.level}/${storedBalance.xp} xp`
+                },
+                {
+                    name: 'Coin',
+                    value: `${await client.toDisplay('balance', storedBalance.balance)}`
+                }
+            ];
+            if (client.dev()) {
+                fields = fields.concat(storedBalance.attributes.arr.map(e => { 
+                    return { 
+                        name: e.name, 
+                        value: e.display, 
+                    } 
+                }));
+            }
+            if (isSelf) fields = fields.concat([
+                {
+                    name: 'Weapon Cooldown',
+                    value: `${cooldowns.parseReadable(storedBalance.weaponUseTimeout, cooldowns.weapon)}`
+                },
+                {
+                    name: 'Dailies Cooldown',
+                    value: `${cooldowns.parseReadable(storedBalance.dailyUseTimeout, cooldowns.daily)}`
+                }
+            ]);
+        
+            const embed = await client.embedy(selectedUser.username, storedBalance.handle, "random");
+            embed
                 .setTimestamp()
-                .addFields([
-                    {
-                        name: 'Health',
-                        value: `${storedBalance.hp}/${storedBalance.hp_max}`
-                    },
-                    {
-                        name: 'XP',
-                        value: `Level ${storedBalance.level}/${storedBalance.xp} xp`
-                    },
-                    {
-                        name: 'Weapon Cooldown',
-                        value: `${cooldowns.parseReadable(storedBalance.weaponUseTimeout, cooldowns.weapon)}`
-                    },
-                    {
-                        name: 'Dailies Cooldown',
-                        value: `${cooldowns.parseReadable(storedBalance.dailyUseTimeout, cooldowns.daily)}`
-                    },
-                    {
-                        name: 'Coin',
-                        value: `${await client.toDisplay('balance', storedBalance.balance)}`
-                    }
-                ]
-                // .concat(storedBalance.attributes.map(e => { return { name: e.name, value: e.value.toString() } }))
-                )
+                .addFields(fields)
                 .setFooter({
-                    text: interaction.user.tag,
-                    iconURL: interaction.user.displayAvatarURL()
+                    text: client.user.tag,
+                    iconURL: client.user.displayAvatarURL()
                 });
             
             await interaction.reply({

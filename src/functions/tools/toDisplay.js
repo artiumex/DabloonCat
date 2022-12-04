@@ -1,7 +1,7 @@
 const emoji = require('../../universal/emoji');
 
 module.exports = (client) => {
-    client.toDisplay = async(choice, value) => {
+    client.toDisplay = (choice, value) => {
         var output;
         switch (choice) {
             case "balance":
@@ -15,7 +15,7 @@ module.exports = (client) => {
                 break;
             default:
                 output = "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH";
-                break
+                break;
         }
         return output
     }
