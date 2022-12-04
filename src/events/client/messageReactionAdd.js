@@ -10,8 +10,8 @@ module.exports = {
         if (['❤️','🤨','🤩'].includes(reaction.emoji.name)) {
             const userBalance = await client.fetchBalance(user.id);
             const targetBalance = await client.fetchBalance(reaction.message.author.id);
-            userBalance.balance += 4;
-            targetBalance.balance += 2;
+            userBalance.balance += 1;
+            targetBalance.balance += 1;
             await targetBalance.save().catch(console.error);
             await userBalance.save().catch(console.error);
             return; 

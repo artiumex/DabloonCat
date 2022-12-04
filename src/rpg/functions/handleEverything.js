@@ -21,12 +21,26 @@ const raceMaster = {
 const raceFiles = fs.readdirSync(`./src/rpg/stuff/races`).filter((file)=>file.endsWith('.js'));
 
 for (const file of raceFiles) {
-    const raceObj = require(`../stuff/races/${file}`);
-    raceMaster.map.set(raceObj.id, raceObj);
-    raceMaster.arr.push(raceObj);
+    const obj = require(`../stuff/races/${file}`);
+    raceMaster.map.set(obj.id, obj);
+    raceMaster.arr.push(obj);
+}
+
+const godsMaster = {
+    arr: [],
+    map: new Map(),
+}
+
+const godFiles = fs.readdirSync(`./src/rpg/stuff/gods`).filter((file)=>file.endsWith('.js'));
+
+for (const file of godFiles) {
+    const obj = require(`../stuff/gods/${file}`);
+    godsMaster.map.set(obj.id, obj);
+    godsMaster.arr.push(obj);
 }
 
 module.exports = {
     classes: classMaster,
     races: raceMaster,
+    gods: godsMaster,
 }

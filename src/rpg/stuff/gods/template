@@ -1,0 +1,11 @@
+// "masculine" -> he/him
+// "feminine" -> she/her
+// "epicene" -> they/them
+// "neuter" -> it/its
+
+module.exports = {
+    name: "",
+    id: "",
+    desc: "",
+    pronouns: "",
+}
