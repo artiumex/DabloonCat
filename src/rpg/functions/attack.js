@@ -33,6 +33,7 @@ module.exports = async (client, attack_data) => {
             if (stealRoll >= targetProf.balance) stealRoll = targetProf.balance
             targetProf.balance -= stealRoll;
             attackProf.balance += stealRoll;
+            attackProf.xp += 20;
             embeds.push(await client.embedy(
                 "Slay!", 
                 `${attacker} killed ${target} and stole ${await client.toDisplay('balance', stealRoll)}.`, 
