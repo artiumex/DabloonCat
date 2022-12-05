@@ -34,3 +34,4 @@ var job = new CronJob(
 	true,
 	'America/Chicago'
 );
+chooseFavored();
