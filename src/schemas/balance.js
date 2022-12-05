@@ -91,7 +91,7 @@ const balanceSchema = new Schema({
         },
         hp_max: {
             get() {
-                return about.roll(this.class.hit_dice, this).maxTotal + this.prof;
+                return about.roll(`${this.class.hit_dice} &m`, this).maxTotal + this.prof;
             }
         },
         luck: {
