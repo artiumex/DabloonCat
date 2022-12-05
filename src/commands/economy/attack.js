@@ -13,7 +13,7 @@ module.exports = {
         const selectedUserBalance = await client.fetchBalance(selectedUser.id);
 
         if (selectedUser.bot) return interaction.reply({
-            content: `Why are you, as a ${userStoredBalance.race.toLowerCase()}, trying to fight a robot? :face_with_raised_eyebrow:`,
+            content: `Why are you, as a ${userStoredBalance.race.name.toLowerCase()}, trying to fight a robot? :face_with_raised_eyebrow:`,
             ephemeral: true,
         });
         else if (selectedUser.id == interaction.user.id) return interaction.reply({
