@@ -20,6 +20,7 @@ const balanceSchema = new Schema({
     // guildId: String,
     userId: String,
     balance: { type: Number, default: 0 },
+    partyId: { type: String, default: 'none' },
     classId: { type: String, default: 'default' },
     raceId: { type: String, default: 'default' },
     prowess: { type: Number, default: 0 },

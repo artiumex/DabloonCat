@@ -31,12 +31,7 @@ module.exports = {
                 }
             ];
             if (client.dev()) {
-                fields = fields.concat(storedBalance.attributes.arr.map(e => { 
-                    return { 
-                        name: e.name, 
-                        value: e.display, 
-                    } 
-                }));
+                fields = fields.concat(storedBalance.attributes.fields);
             }
             if (isSelf) fields = fields.concat([
                 {

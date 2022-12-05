@@ -19,14 +19,20 @@ module.exports = {
             list: list,
             arr: [],
             map:  new Map(),
+            fields: [],
         };
         for (const a of list) {
-            const attr = { 
+            const attr = {
+                raw: a,
                 name: a.name, 
                 value: profile[a.mid], 
                 mod: profile[a.id],
             }
-            attr.display = `${attr.value} (${attr.mod >= 0 ? `+${attr.mod}` : `-${Math.abs(attr.mod)}`})`
+            attr.display = `${attr.value} (${attr.mod >= 0 ? `+${attr.mod}` : `-${Math.abs(attr.mod)}`})`;
+            output.fields.push({ 
+                name: attr.name, 
+                value: attr.display,
+            });
             output.arr.push(attr);
             output.map.set(a.id, attr);
         }

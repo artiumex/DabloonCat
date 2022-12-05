@@ -5,6 +5,7 @@ const godsSchema = new Schema({
         type: Map,
         of: String
     },
+    share_loot: { type: Boolean, default: false },
 });
 
 module.exports = model("God", godsSchema, "gods");
