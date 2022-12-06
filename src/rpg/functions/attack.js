@@ -1,7 +1,7 @@
 module.exports = async (client, attack_data) => {
     const { weapon, attacker, attackProf, target, targetProf } = attack_data;
     const wdisplay = `${weapon.emoji.text} **${weapon.name}**`;
-    const embedy = client.embedy;
+    const embedy = new client.embedy;
 
     if (attackProf.weaponUse || client.dev) attackProf.weaponUseTimeout = new Date();
     else {
