@@ -33,7 +33,7 @@ module.exports = {
             const favored = daddy.gods.get(choice);
             const pronouns = gods.getPronouns(choice);
 
-            const embedy = new client.embedy.add(`Holy Shit`, `${i.user} begged to **${name}**`);
+            const embedy = (new client.embedy).add(`Holy Shit`, `${i.user} begged to **${name}**`);
             
             if ((client.roll(`1d4`)).total == 4) {
                 if (favored == userBalance.raceId) {

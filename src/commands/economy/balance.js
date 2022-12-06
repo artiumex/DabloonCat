@@ -44,8 +44,9 @@ module.exports = {
                 }
             ]);
         
-            const embedy = new client.embedy(selectedUser.username, storedBalance.handle, "random", fields, true);
-            
+            const embedy = (new client.embedy).add(selectedUser.username, storedBalance.handle, "random", fields, true);
+            console.log(embedy);
+
             await interaction.reply({
                 embeds: embedy.list,
                 ephemeral: true,

@@ -58,7 +58,7 @@ module.exports = {
         });
         const storedBalance = await client.fetchBalance(selectedUser.id);
 
-        const embedy = new client.embedy.add(
+        const embedy = (new client.embedy).add(
             `:computer: Booting up admin panel`,
             `Are we fucking with ${selectedUser}?`
         );
