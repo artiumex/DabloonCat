@@ -17,7 +17,7 @@ module.exports = (client) => {
         }
 
         const rest = new REST({ version: 9 }).setToken(process.env.token);
-        if (client.dev()) {
+        if (client.dev) {
             try {
                 console.log("Started refreshing application (/) commands.")
                 

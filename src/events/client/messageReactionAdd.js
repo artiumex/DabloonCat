@@ -31,7 +31,7 @@ module.exports = {
             targetProf: targetBalance,
         });
 
-        await reaction.message.channel.send({ embeds: attacks })
+        await reaction.message.channel.send({ embeds: attacks.list })
         // await reaction.remove().catch(console.error);
     }
 }

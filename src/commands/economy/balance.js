@@ -30,7 +30,7 @@ module.exports = {
                     value: `${await client.toDisplay('balance', storedBalance.balance)}`
                 }
             ];
-            if (client.dev()) {
+            if (client.dev) {
                 fields = fields.concat(storedBalance.attributes.fields);
             }
             if (isSelf) fields = fields.concat([
@@ -44,17 +44,10 @@ module.exports = {
                 }
             ]);
         
-            const embed = await client.embedy(selectedUser.username, storedBalance.handle, "random");
-            embed
-                .setTimestamp()
-                .addFields(fields)
-                .setFooter({
-                    text: client.user.tag,
-                    iconURL: client.user.displayAvatarURL()
-                });
+            const embedy = client.embedy(selectedUser.username, storedBalance.handle, "random", fields, true);
             
             await interaction.reply({
-                embeds: [embed],
+                embeds: embedy.list,
                 ephemeral: true,
             })
         }

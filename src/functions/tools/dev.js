@@ -1,6 +1,3 @@
 module.exports = (client) => {
-    client.dev = () => {
-        if (process.env.dev == "yes") return true;
-        else return false;
-    }
+    client.dev = process.env.dev == "yes" ? true : false;
 }

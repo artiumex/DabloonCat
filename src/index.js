@@ -26,12 +26,11 @@ client.login(token);
 })();
 
 var job = new CronJob(
-	'0 0 0 * * *',
+    '0 0 8-20 * * *',
 	chooseFavored,
-	() => {
-        console.log(chalk.blue(`Changed favored heroes.`));
-    },
+	null,
 	true,
-	'America/Chicago'
+	'America/Chicago',
+    null,
+    true
 );
-chooseFavored();

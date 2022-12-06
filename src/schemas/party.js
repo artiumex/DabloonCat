@@ -29,7 +29,7 @@ const partySchema = new Schema({
             get() {
                 const output = new Map();
                 const mList = []
-                const notMembers = (Object.keys(about.roles)).slice(0,-1);
+                const notMembers = about.rolesIds();
                 for (const m of this.memberList) {
                     if (m.role_raw == "member") {
                         mList.push(m.id);

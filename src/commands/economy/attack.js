@@ -30,7 +30,7 @@ module.exports = {
         });
 
         await interaction.reply({
-            embeds: attacks,
+            embeds: attacks.list,
         })
     }
 }

@@ -5,12 +5,16 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('pay')
         .setDescription('Pays the user mentioned')
-        .addUserOption(option => option.setName('target').setDescription('The user you\'d like to pay').setRequired(true))
-        .addNumberOption(option => option
+        .addUserOption(option => option
+            .setName('target')
+            .setDescription('The user you\'d like to pay')
+            .setRequired(true)
+        )
+        .addIntegerOption(option => option
             .setName('amount')
             .setDescription('The amount you would like to send.')
-            .setMinValue(1)
             .setRequired(true)
+            .setMinValue(1)
         ),
     async execute(interaction, client) {
         const userStoredBalance = await client.fetchBalance(interaction.user.id);

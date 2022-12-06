@@ -17,6 +17,10 @@ module.exports = {
                 })
             }
 
-        }
+        } /*else if (interaction.isUserContextMenuCommand()){
+            // Get the User's username from context menu
+            const { username } = interaction.targetUser;
+            console.log(username);
+        }*/
     }
 }
