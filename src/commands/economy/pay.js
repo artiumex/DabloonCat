@@ -20,10 +20,6 @@ module.exports = {
             content: "Stop trying to launder dabloons!!!",
             ephemeral: true,
         });
-        else if (amount < 1) return await interaction.reply({
-            content: `The amount must be more than ${await client.toDisplay('balance', 1)}`,
-            ephemeral: true,
-        });
         else if (amount > userStoredBalance.balance) return interaction.reply({
             content: `You do not have enough ${await client.toDisplay('money')} to send!`,
             ephemeral: true,
