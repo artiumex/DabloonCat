@@ -119,7 +119,7 @@ module.exports = {
                 content: `You need to be a leader in your party to disband it.`,
                 ephemeral: true,
             });
-            await Party.updateMany({ partyId: storedParty.id }, { partyId: "none" }).catch(console.error);
+            await Balance.updateMany({ partyId: storedParty.id }, { partyId: "none" }).catch(console.error);
             await Party.findOneAndDelete({ _id: storedParty._id }).catch(console.error);
             embedy.add(
                 `${storedParty.name} has disbanded.`,
