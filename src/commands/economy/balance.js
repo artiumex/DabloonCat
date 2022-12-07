@@ -10,6 +10,7 @@ module.exports = {
     async execute(interaction, client) {
         const selectedUser = interaction.options.getUser('target') || interaction.user;
         const storedBalance = await client.fetchBalance(selectedUser.id);
+        const selfBalance = await client.fetchBalance(interaction.user.id);
         const isSelf = interaction.options.getUser('target') ? false : true;
         if (!storedBalance) return await interaction.reply({
             content: `${selectedUser.tag} doesnt have a balance.`,
@@ -30,10 +31,10 @@ module.exports = {
                     value: `${await client.toDisplay('balance', storedBalance.balance)}`
                 }
             ];
-            if (client.dev || storedBalance.admin == true) {
+            if (client.dev || selfBalance.admin == true) {
                 fields = fields.concat(storedBalance.attributes.fields);
             }
-            if (isSelf || storedBalance.admin == true) fields = fields.concat([
+            if (isSelf || selfBalance.admin == true) fields = fields.concat([
                 {
                     name: 'Weapon Cooldown',
                     value: `${cooldowns.parseReadable(storedBalance.weaponUseTimeout, cooldowns.weapon)}`
