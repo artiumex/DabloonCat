@@ -9,7 +9,7 @@ module.exports = {
         .addUserOption(option => option.setName('target').setDescription('The user you\'d like to view the balance of')),
     async execute(interaction, client) {
         const selectedUser = interaction.options.getUser('target') || interaction.user;
-        const storedBalance = await client.getBalance(selectedUser.id);
+        const storedBalance = await client.fetchBalance(selectedUser.id);
         const isSelf = interaction.options.getUser('target') ? false : true;
         if (!storedBalance) return await interaction.reply({
             content: `${selectedUser.tag} doesnt have a balance.`,

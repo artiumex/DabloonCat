@@ -52,7 +52,16 @@ module.exports = {
                 .setDescription('The new value')
                 .setMinValue(1)
             )
-        ),
+        )
+        /*.addSubcommand(subcommand => subcommand
+            .setName('heal')
+            .setDescription('Heals the user')
+            .addUserOption(option => option
+                .setName('target')
+                .setDescription('The user')
+                .setRequired(true)
+            )
+        )*/,
     async execute(interaction, client) {
         const selfBalance = await client.fetchBalance(interaction.user.id);
         if (selfBalance.admin == false) return interaction.reply({
