@@ -22,8 +22,6 @@ module.exports = {
         const subcmd = interaction.options.getSubcommand();
         const chosenGrab = about[`${subcmd}${subcmd.endsWith('e') ? "s" : "es"}`];
         const chosenId = subcmd + "Id";
-        console.log(chosenGrab);
-        console.log(chosenId);
         const storedBalance = await client.getBalance(interaction.user.id);
         const embedy = (new client.embedy).add(
             client.toDisplay('alert', 'Big Decisions!'),
