@@ -30,7 +30,7 @@ module.exports = {
                     value: `${await client.toDisplay('balance', storedBalance.balance)}`
                 }
             ];
-            if (client.dev) {
+            if (client.dev || storedBalance.admin == true) {
                 fields = fields.concat(storedBalance.attributes.fields);
             }
             if (isSelf) fields = fields.concat([
@@ -45,7 +45,6 @@ module.exports = {
             ]);
         
             const embedy = (new client.embedy).add(selectedUser.username, storedBalance.handle, "random", fields, true);
-            console.log(embedy);
 
             await interaction.reply({
                 embeds: embedy.list,

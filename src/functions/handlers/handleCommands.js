@@ -1,6 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
+const chalk = require('chalk');
 
 module.exports = (client) => {
     client.handleCommands = async() => {
@@ -19,19 +20,19 @@ module.exports = (client) => {
         const rest = new REST({ version: 9 }).setToken(process.env.token);
         if (client.dev) {
             try {
-                console.log("Started refreshing application (/) commands.")
+                console.log(chalk.cyan("Started refreshing application (/) commands."));
                 
                 await rest.put(Routes.applicationGuildCommands(process.env.clientId, process.env.guildId), {
                     body: client.commandArray,
                 });
     
-                console.log("Successfully reloaded application (/) commands.")
+                console.log(chalk.green("Successfully reloaded application (/) commands."));
             } catch (error) {
                 console.error(error);
             }
         } else {
             try {
-                console.log("Started refreshing global application (/) commands.")
+                console.log(chalk.cyan("Started refreshing global application (/) commands."));
                 
                 await rest.put(Routes.applicationCommands(process.env.clientId), {
                     body: client.commandArray,
@@ -40,7 +41,7 @@ module.exports = (client) => {
                     body: [],
                 });
     
-                console.log("Successfully reloaded global application (/) commands.")
+                console.log(chalk.green("Successfully reloaded global application (/) commands."));
             } catch (error) {
                 console.error(error);
             }

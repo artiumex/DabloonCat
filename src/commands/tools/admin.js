@@ -45,18 +45,17 @@ module.exports = {
                 .setMinValue(1)
             )
         ),
-    async execute(interaction, client) {
-        if (interaction.user.id != "256880604359032832") return interaction.reply({
-            content: "No.",
-            ephemeral: true,
-        });
-
-        const selectedUser = interaction.options.getUser('target');
+    async execute(interaction, client) {const selectedUser = interaction.options.getUser('target');
         if (selectedUser.bot) return interaction.reply({
             content: "That's a bot lmao.",
             ephemeral: true,
         });
         const storedBalance = await client.fetchBalance(selectedUser.id);
+
+        if (storedBalance.admin == false) return interaction.reply({
+            content: "You are not an admin!",
+            ephemeral: true,
+        });
 
         const embedy = (new client.embedy).add(
             `:computer: Booting up admin panel`,

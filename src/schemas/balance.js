@@ -1,19 +1,6 @@
 const { Schema, model } = require('mongoose');
 const about = require('../universal/about');
 const cooldowns = require('../universal/cooldowns');
-// Class
-// 0=Peasant, 1=Arcane, 2=Trickster, 3=Warrior, 4=Keeper
-
-// Race
-// 0=Human, 1=Elf, 2=Dwarf, 3=Celestial
-
-// Weapon
-// 0=none, 1=wand, 2=paperclip, 3=sword, 4=wallet
-
-// Buffs and Inventory
-// 0 = none
-// 10^n
-// 1 = shield, 2 = prowess, 3 = mettle, 4 = awe, 5 = judgement, 6 = wyrd, 7 = health
 
 const balanceSchema = new Schema({
     _id: Schema.Types.ObjectId,
@@ -32,6 +19,8 @@ const balanceSchema = new Schema({
     xp: { type: Number, default: 0 },
     weaponUseTimeout: { type: Date, default: new Date() },
     dailyUseTimeout: { type: Date, default: new Date() },
+    ignore: { type: Boolean, default: false },
+    admin: { type: Boolean, default: false },
 }, {
     virtuals: {
         p: {

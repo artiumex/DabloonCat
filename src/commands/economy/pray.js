@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, ComponentType, ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
 const Balance = require('../../schemas/balance');
-const gods = require('../../rpg/functions/gods');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,14 +7,13 @@ module.exports = {
         .setDescription('Invoke the name of your god and see what boons they present you...'),
     async execute(interaction, client) {
         const userBalance = await client.fetchBalance(interaction.user.id);
-        const daddy = await gods.db();
 
         const row = new ActionRowBuilder()
         .addComponents(
             new SelectMenuBuilder()
                 .setCustomId('select')
                 .setPlaceholder('Nothing selected')
-                .addOptions(gods.list.arr.map(e => {
+                .addOptions(client.godsList.map(e => {
                     return { 
                         label: e.name, 
                         description: e.desc, 
@@ -29,19 +27,20 @@ module.exports = {
 
         collector.on('collect', async i => {
             const choice = i.values[0];
-            const name = gods.list.map.get(choice).name;
-            const favored = daddy.gods.get(choice);
-            const pronouns = gods.getPronouns(choice);
+            const { name, favored, pronouns } = client.godsMap.get(choice);
 
             const embedy = (new client.embedy).add(`Holy Shit`, `${i.user} begged to **${name}**`);
+            console.log(`${i.user.tag} begged to ${name}`);
             
+            // if (true) {
             if ((client.roll(`1d4`)).total == 4) {
                 if (favored == userBalance.raceId) {
-                    const dabamt = (client.roll(`1d10`, userBalance)).total;
-                    const xpamt = (client.roll(`1d10`, userBalance)).total;
+                    const dabamt = (client.roll(`1d10+4`, userBalance)).total;
+                    const xpamt = (client.roll(`1d10+4`, userBalance)).total;
                     embedy.add(
                         `Favored!`,
-                        `${name} looks down on you with favor in ${pronouns.possessive} eyes.\n${pronouns.subject} grants you ${client.toDisplay('balance', dabamt)} and ${xpamt} experience.`,
+                        `${name} looks down on you with favor in ${pronouns.possessive} eyes.
+                        ${pronouns.subject} grants you ${client.toDisplay('balance', dabamt)} and ${xpamt} experience.`,
                         "green"
                     );
                     userBalance.balance += dabamt;

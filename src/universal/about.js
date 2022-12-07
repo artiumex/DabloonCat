@@ -28,7 +28,7 @@ module.exports = {
                 value: profile[a.mid], 
                 mod: profile[a.id],
             }
-            attr.display = `${attr.value} (${attr.mod >= 0 ? `+${attr.mod}` : `-${Math.abs(attr.mod)}`})`;
+            attr.display = `**${attr.value}** (${attr.mod >= 0 ? `+${attr.mod}` : `-${Math.abs(attr.mod)}`})`;
             output.fields.push({ 
                 name: attr.name, 
                 value: attr.display,

@@ -2,10 +2,7 @@ require('dotenv').config();
 const { token, databaseToken } = process.env;
 const { connect } = require('mongoose');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-var CronJob = require('cron').CronJob;
 const fs = require('fs');
-
-const { chooseFavored } = require('./rpg/functions/gods');
 
 const client = new Client({ intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions ] })
 client.commands = new Collection();
@@ -24,13 +21,3 @@ client.login(token);
 (async () => {
     await connect(databaseToken).catch(console.error);
 })();
-
-var job = new CronJob(
-    '0 0 8-20 * * *',
-	chooseFavored,
-	null,
-	true,
-	'America/Chicago',
-    null,
-    true
-);
