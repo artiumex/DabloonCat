@@ -12,7 +12,7 @@ module.exports = {
                 .setDescription('The user')
                 .setRequired(true)
             )
-            .addNumberOption(option => option
+            .addIntegerOption(option => option
                 .setName('value')
                 .setDescription('The amount to pay')
                 .setRequired(true)
@@ -47,7 +47,7 @@ module.exports = {
                     )
                     .setRequired(true)
             )
-            .addNumberOption(option => option
+            .addIntegerOption(option => option
                 .setName('value')
                 .setDescription('The new value')
                 .setMinValue(1)
@@ -104,7 +104,7 @@ module.exports = {
 
         if (interaction.options.getSubcommand() == 'attribute') {
             const target = interaction.options.getUser('target');
-            const amount = Math.floor(interaction.options.getNumber('value'));
+            const amount = Math.floor(interaction.options.getInteger('value'));
             const choice = interaction.options.getString('attr');
             const targetBalance = await getTarget(target);
             const attributes = choice == "all" ? targetBalance.attributes.arr : [targetBalance.attributes.map.get(choice)];
@@ -132,7 +132,7 @@ module.exports = {
             }
         } else if (interaction.options.getSubcommand() == 'pay') {
             const target = interaction.options.getUser('target');
-            const amount = Math.floor(interaction.options.getNumber('value'));
+            const amount = Math.floor(interaction.options.getInteger('value'));
             const targetBalance = await getTarget(target);
             const oldBal = `${targetBalance.balance}`;
             targetBalance.balance += amount;

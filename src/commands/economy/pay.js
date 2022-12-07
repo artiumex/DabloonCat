@@ -10,7 +10,7 @@ module.exports = {
             .setDescription('The user you\'d like to pay')
             .setRequired(true)
         )
-        .addNumberOption(option => option
+        .addIntegerOption(option => option
             .setName('amount')
             .setDescription('The amount you would like to send.')
             .setRequired(true)
@@ -18,7 +18,7 @@ module.exports = {
         ),
     async execute(interaction, client) {
         const userStoredBalance = await client.fetchBalance(interaction.user.id);
-        const amount = Math.floor(interaction.options.getNumber('amount'));
+        const amount = Math.floor(interaction.options.getInteger('amount'));
         const selectedUser = interaction.options.getUser('target');
 
         if (selectedUser.bot) return interaction.reply({
