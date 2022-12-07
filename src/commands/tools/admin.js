@@ -53,6 +53,26 @@ module.exports = {
                 .setMinValue(1)
             )
         )
+        .addSubcommand(subcommand => subcommand
+            .setName('cooldown')
+            .setDescription('resets cooldown for the users')
+            .addUserOption(option => option
+                .setName('target')
+                .setDescription('The user')
+                .setRequired(true)
+            )
+            .addStringOption(option => 
+                option
+                    .setName('option')
+                    .setDescription('The cooldowns to reset')
+                    .addChoices(
+                        { name: 'Weapon', value: 'weaponUseTimeout' },
+                        { name: 'Dailies', value: 'dailyUseTimeout' },
+                        { name: 'All', value: 'all' },
+                    )
+                    .setRequired(true)
+            )
+        ),
         /*.addSubcommand(subcommand => subcommand
             .setName('heal')
             .setDescription('Heals the user')
@@ -61,7 +81,7 @@ module.exports = {
                 .setDescription('The user')
                 .setRequired(true)
             )
-        )*/,
+        )*/
     async execute(interaction, client) {
         const selfBalance = await client.fetchBalance(interaction.user.id);
         if (selfBalance.admin == false) return interaction.reply({
@@ -134,6 +154,20 @@ module.exports = {
                     .join('\n'),
                 "random"
             );
+        } else if (interaction.options.getSubcommand() == 'cooldown') {
+            const choice = interaction.options.getString('option');
+            const timeouts = choice == "all" ? ["dailyUseTimeout", "weaponUseTimeout"] : [choice];
+            const target = interaction.options.getUser('target');
+            const targetBalance = await getTarget(target);
+            for (const t of timeouts) {
+                targetBalance[t] = new Date(0);
+            }
+            await targetBalance.save().catch(console.error);
+            embedy.add(
+                `Cooldowns reset`,
+                `${timeouts.join(', ')}`,
+                "red"
+            );
         }
 
         await interaction.reply({
@@ -141,4 +175,7 @@ module.exports = {
             ephemeral: true,
         })
     }
+
+    
+
 }

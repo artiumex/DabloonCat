@@ -18,7 +18,7 @@ const balanceSchema = new Schema({
     hp: { type: Number, default: 50 },
     xp: { type: Number, default: 0 },
     weaponUseTimeout: { type: Date, default: new Date() },
-    dailyUseTimeout: { type: Date, default: new Date() },
+    dailyUseTimeout: { type: Date, default: new Date(0) },
     ignore: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },
 }, {
