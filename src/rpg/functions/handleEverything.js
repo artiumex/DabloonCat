@@ -37,12 +37,6 @@ for (const file of raceFiles) {
 }
 out(raceMaster);
 
-const godsMaster = {
-    type: "Gods",
-    arr: [],
-    map: new Map(),
-}
-
 module.exports = {
     classes: classMaster,
     races: raceMaster,

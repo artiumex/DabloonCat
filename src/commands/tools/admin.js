@@ -19,6 +19,14 @@ module.exports = {
             )
         )
         .addSubcommand(subcommand => subcommand
+            .setName('gods')
+            .setDescription('Manage or view gods')
+            .addBooleanOption(o => o
+                .setName('shuffle')
+                .setDescription('Whether or not to shuffle the gods')
+            )
+        )
+        .addSubcommand(subcommand => subcommand
             .setName('attribute')
             .setDescription('Changes or views a user\'s attributes')
             .addUserOption(option => option
@@ -45,31 +53,36 @@ module.exports = {
                 .setMinValue(1)
             )
         ),
-    async execute(interaction, client) {const selectedUser = interaction.options.getUser('target');
-        if (selectedUser.bot) return interaction.reply({
-            content: "That's a bot lmao.",
-            ephemeral: true,
-        });
-        const storedBalance = await client.fetchBalance(selectedUser.id);
-
-        if (storedBalance.admin == false) return interaction.reply({
+    async execute(interaction, client) {
+        const selfBalance = await client.fetchBalance(interaction.user.id);
+        if (selfBalance.admin == false) return interaction.reply({
             content: "You are not an admin!",
             ephemeral: true,
         });
+        const embedy = new client.embedy;
 
-        const embedy = (new client.embedy).add(
-            `:computer: Booting up admin panel`,
-            `Are we fucking with ${selectedUser}?`
-        );
+        const getTarget = async (target) => {
+            if (target && target.bot) return interaction.reply({
+                content: "That's a bot lmao.",
+                ephemeral: true,
+            });
+            embedy.add(
+                `:computer: Booting up admin panel`,
+                `Are we fucking with ${target}?`
+            );
+            return await client.fetchBalance(target.id);
+        }
 
         if (interaction.options.getSubcommand() == 'attribute') {
+            const target = interaction.options.getUser('target');
             const amount = interaction.options.getNumber('value');
             const choice = interaction.options.getString('attr');
-            const attributes = choice == "all" ? storedBalance.attributes.arr : [storedBalance.attributes.map.get(choice)];
+            const targetBalance = await getTarget();
+            const attributes = choice == "all" ? targetBalance.attributes.arr : [targetBalance.attributes.map.get(choice)];
            
             if (amount && choice !== "all") {
-                storedBalance[attributes[0].raw.mid] = amount;
-                await storedBalance.save().catch(console.error);
+                targetBalance[attributes[0].raw.mid] = amount;
+                await targetBalance.save().catch(console.error);
                 embedy.add(
                     `Updated ${attributes[0].name}`,
                     `${attributes[0].value} -> ${amount}`,
@@ -77,7 +90,7 @@ module.exports = {
                 );
             } else {
                 embedy.add(
-                    `${selectedUser.tag}'s ${choice == "all" ? 'Attributes' : 'Attribute'}`,
+                    `${target.tag}'s ${choice == "all" ? 'Attributes' : 'Attribute'}`,
                     "Listy yass",
                     "green",
                     attributes.map(e => {
@@ -89,14 +102,28 @@ module.exports = {
                 )
             }
         } else if (interaction.options.getSubcommand() == 'pay') {
+            const target = interaction.options.getUser('target');
             const amount = interaction.options.getNumber('value');
-            const oldBal = `${storedBalance.balance}`;
-            storedBalance.balance += amount;
-            await storedBalance.save().catch(console.error);
+            const targetBalance = await getTarget();
+            const oldBal = `${targetBalance.balance}`;
+            targetBalance.balance += amount;
+            await targetBalance.save().catch(console.error);
             embedy.add(
-                `Added ${amount} to ${selectedUser.tag}'s balance`,
-                `${client.toDisplay('balance', oldBal)} -> ${client.toDisplay('balance', storedBalance.balance)}`,
+                `Added ${amount} to ${target.tag}'s balance`,
+                `${client.toDisplay('balance', oldBal)} -> ${client.toDisplay('balance', targetBalance.balance)}`,
                 "cyan"
+            );
+        } else if (interaction.options.getSubcommand() == 'gods') {
+            const shuffle = interaction.options.getBoolean('shuffle');
+            if (shuffle == true) {
+                await client.shuffleGods();
+            }
+            embedy.add(
+                shuffle == true ? `Successfully reloaded gods!` : `Here you are!`,
+                client.godsList
+                    .map(e => `**${e.name}** favors *${client.rpgRaces.map.get(e.favored).name}*`)
+                    .join('\n'),
+                "random"
             );
         }
 
