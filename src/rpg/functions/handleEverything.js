@@ -43,17 +43,7 @@ const godsMaster = {
     map: new Map(),
 }
 
-const godFiles = fs.readdirSync(`./src/rpg/stuff/gods`).filter((file)=>file.endsWith('.js'));
-
-for (const file of godFiles) {
-    const obj = require(`../stuff/gods/${file}`);
-    godsMaster.map.set(obj.id, obj);
-    godsMaster.arr.push(obj);
-}
-out(godsMaster);
-
 module.exports = {
     classes: classMaster,
     races: raceMaster,
-    gods: godsMaster,
 }
