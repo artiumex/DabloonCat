@@ -65,17 +65,10 @@ module.exports = {
         const storedBalance = await client.fetchBalance(interaction.user.id);
         const storedParty = await client.getParty(storedBalance.partyId);
         const embedy = new client.embedy;
-        const finish = (reply = true) => {
-            if (reply) {
-                interaction.reply({
-                    embeds: embedy.list,
-                });
-            } else {
-                interaction.editReply({
-                    embeds: embedy.list,
-                    components: [],
-                });
-            }
+        const finish = () => {
+            interaction.reply({
+                embeds: embedy.list,
+            });
         }
         const target = interaction.options.getUser('target');
         if (target) {
@@ -167,7 +160,11 @@ module.exports = {
                     .setLabel('No')
                     .setStyle(ButtonStyle.Danger),
                 );
-            const reply = await interaction.reply({ components: [row], fetchReply: true });
+            const reply = await interaction.reply({
+                content: `${target}\nYou have been asked to join the **${storedParty.name} Party**!\nDo you wish to join?`,
+                components: [row], 
+                fetchReply: true 
+            });
 
             const collector = reply.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
 
@@ -186,12 +183,13 @@ module.exports = {
                     } else {
                         embedy.add(
                             `Recruitment declined!`,
-                            `${targer} does not wish to join the **${storedParty.name} Party**.`,
+                            `${target} does not wish to join the **${storedParty.name} Party**.`,
                             `red`
                         );
                     }
                     collector.stop("response from target");
-                    finish(false);
+                    i.reply({ embeds: embedy.list });
+                    interaction.deleteReply();
                 } else {
                     i.reply({ content: `You are not the person this is for!`, ephemeral: true });
                 }
@@ -292,7 +290,7 @@ module.exports = {
                             }
                         })),
                 );
-            const reply = await interaction.reply({ components: [row], fetchReply: true, ephemeral: true });
+            const reply = await interaction.reply({ components: [row], fetchReply: true });
 
             const collector = reply.createMessageComponentCollector({ componentType: ComponentType.SelectMenu, time: 30000 });
 
@@ -318,7 +316,10 @@ module.exports = {
                     "green"
                 );
                 collector.stop();
-                return finish(false);
+                i.reply({
+                    embeds: embedy.list,
+                });
+                reply.deleteReply();
             });
         }
     },

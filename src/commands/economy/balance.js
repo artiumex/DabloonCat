@@ -33,7 +33,7 @@ module.exports = {
             if (client.dev || storedBalance.admin == true) {
                 fields = fields.concat(storedBalance.attributes.fields);
             }
-            if (isSelf) fields = fields.concat([
+            if (isSelf || storedBalance.admin == true) fields = fields.concat([
                 {
                     name: 'Weapon Cooldown',
                     value: `${cooldowns.parseReadable(storedBalance.weaponUseTimeout, cooldowns.weapon)}`
@@ -44,7 +44,7 @@ module.exports = {
                 }
             ]);
         
-            const embedy = (new client.embedy).add(selectedUser.username, storedBalance.handle, "random", fields, true);
+            const embedy = (new client.embedy).add(selectedUser.tag, storedBalance.handle, "random", fields, true);
 
             await interaction.reply({
                 embeds: embedy.list,
