@@ -5,7 +5,7 @@ module.exports = (client) => {
         var output;
         switch (choice) {
             case "balance":
-                output = `${emoji.dabloon.text} ${value || value == 0 ? `**${value}**` : ':eyes:'}`;
+                output = `${value || value == 0 ? `**${value}**` : ':eyes:'} ${emoji.dabloon.text}`;
                 break;
             case "money":
                 output = emoji.dabloon.text;

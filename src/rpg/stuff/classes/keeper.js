@@ -14,5 +14,12 @@ module.exports = {
             text: ":moneybag:",
             id: "💰",
         }
+    },
+    bonuses: {
+        p: false,
+        m: false,
+        a: false,
+        j: true,
+        w: false,
     }
 }

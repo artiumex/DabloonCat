@@ -14,5 +14,12 @@ module.exports = {
             text: ":punch:",
             id: "👊",
         }
+    },
+    bonuses: {
+        p: false,
+        m: false,
+        a: false,
+        j: false,
+        w: false,
     }
 }

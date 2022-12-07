@@ -14,5 +14,12 @@ module.exports = {
             text: ":magic_wand:",
             id: "🪄",
         }
+    },
+    bonuses: {
+        p: false,
+        m: false,
+        a: false,
+        j: false,
+        w: true,
     }
 }

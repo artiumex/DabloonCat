@@ -25,27 +25,27 @@ const balanceSchema = new Schema({
     virtuals: {
         p: {
             get() {
-                return about.mod(this.prowess) + about.racialBonus(this, "p");
+                return about.mod(this.prowess) + about.racialBonus(this, "p") + about.classBonus(this, "p");
             }
         },
         m: {
             get() {
-                return about.mod(this.mettle) + about.racialBonus(this, "m");
+                return about.mod(this.mettle) + about.racialBonus(this, "m") + about.classBonus(this, "m");
             }
         },
         a: {
             get() {
-                return about.mod(this.awe) + about.racialBonus(this, "a");
+                return about.mod(this.awe) + about.racialBonus(this, "a") + about.classBonus(this, "a");
             }
         },
         j: {
             get() {
-                return about.mod(this.judgement) + about.racialBonus(this, "j");
+                return about.mod(this.judgement) + about.racialBonus(this, "j") + about.classBonus(this, "pj");
             }
         },
         w: {
             get() {
-                return about.mod(this.wyrd) + about.racialBonus(this, "w");
+                return about.mod(this.wyrd) + about.racialBonus(this, "w") + about.classBonus(this, "w");
             }
         },
         class: {
@@ -80,7 +80,7 @@ const balanceSchema = new Schema({
         },
         hp_max: {
             get() {
-                return about.roll(`${this.class.hit_dice} &m`, this).maxTotal + this.prof;
+                return about.roll(`${this.class.hit_dice} &m`, this).maxTotal;
             }
         },
         luck: {

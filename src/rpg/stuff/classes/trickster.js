@@ -14,5 +14,12 @@ module.exports = {
             text: ":paperclip:",
             id: "📎",
         }
+    },
+    bonuses: {
+        p: false,
+        m: true,
+        a: false,
+        j: false,
+        w: false,
     }
 }

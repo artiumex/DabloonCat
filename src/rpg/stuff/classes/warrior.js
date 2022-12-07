@@ -14,5 +14,12 @@ module.exports = {
             text: ":crossed_swords:",
             id: "⚔️",
         }
+    },
+    bonuses: {
+        p: true,
+        m: false,
+        a: false,
+        j: false,
+        w: false,
     }
 }

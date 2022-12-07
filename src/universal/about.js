@@ -59,6 +59,10 @@ module.exports = {
         const output = profile.race.bonuses[attribute];
         return output;
     },
+    classBonus(profile, attribute) {
+        const output = profile.class.bonuses[attribute];
+        return output ? profile.prof : 0;
+    },
     mod(attr) {
         return Math.floor((attr - 10) / 2);
     },
