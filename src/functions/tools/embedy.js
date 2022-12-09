@@ -39,6 +39,8 @@ module.exports = (client) => {
                 case ("white"):
                     output.setColor([255,255,255]);
                     break;
+                case("hotpink"):
+                    output.setColor([255,105,180]);
                 default:
                     output.setColor([0,0,0]);
                     break;
