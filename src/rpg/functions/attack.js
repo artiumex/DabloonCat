@@ -12,6 +12,12 @@ module.exports = async (client, attack_data) => {
         );
         return embedy;
     }
+    
+    if (targetBalance.ignore) return embedy.add(
+        "Divine Intervention!",
+        "Dabloon Cat notices you attempt to attack his chosen, and intercepts your attack!",
+        "hotpink"
+    );
 
     const attackRoll = attackProf.rollToHit;
     const damageRoll = attackProf.rollDamage;
