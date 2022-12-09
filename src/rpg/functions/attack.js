@@ -13,7 +13,7 @@ module.exports = async (client, attack_data) => {
         return embedy;
     }
     
-    if (targetBalance.ignore == true) return embedy.add(
+    if (targetProf.ignore == true) return embedy.add(
         "Divine Intervention!",
         "Dabloon Cat notices you attempt to attack his chosen, and intercepts your attack!",
         "hotpink"
