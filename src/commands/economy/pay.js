@@ -33,6 +33,10 @@ module.exports = {
             content: `You do not have enough ${await client.toDisplay('money')} to send!`,
             ephemeral: true,
         });
+        else if (targetBalance.ignore == true) return interaction.reply({
+            content: "You can not pay this person!",
+            ephemeral: true,
+        });
         
         const selectedUserBalance = await client.fetchBalance(selectedUser.id);
         await Balance.findOneAndUpdate({ _id: userStoredBalance._id }, { balance: userStoredBalance.balance - amount });
