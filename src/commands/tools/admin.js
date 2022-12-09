@@ -72,6 +72,15 @@ module.exports = {
                     )
                     .setRequired(true)
             )
+        )
+        .addSubcommand(subcommand => subcommand
+            .setName('nerf')
+            .setDescription('Nerfs the mentioned user')
+            .addUserOption(option => option
+                .setName('target')
+                .setDescription('The user')
+                .setRequired(true)
+            )
         ),
         /*.addSubcommand(subcommand => subcommand
             .setName('heal')
@@ -83,6 +92,7 @@ module.exports = {
             )
         )*/
     async execute(interaction, client) {
+        var secret = true;
         const selfBalance = await client.fetchBalance(interaction.user.id);
         if (selfBalance.admin == false) return interaction.reply({
             content: "You are not an admin!",
@@ -96,8 +106,7 @@ module.exports = {
                 ephemeral: true,
             });
             embedy.add(
-                `:computer: Booting up admin panel`,
-                `Are we fucking with ${target}?`
+                `:computer: Booting up admin panel`
             );
             return await client.fetchBalance(target.id);
         }
@@ -168,11 +177,32 @@ module.exports = {
                 `${timeouts.join(', ')}`,
                 "red"
             );
+        } else if (interaction.options.getSubcommand() == 'nerf') {
+            secret = false;
+            const choice = interaction.options.getString('option');
+            const target = interaction.options.getUser('target');
+            const targetBalance = await getTarget(target);
+            targetBalance.balance = 0;
+            targetBalance.xp = 0;
+            targetBalance.weaponUseTimeout = new Date(Date.parse(new Date) + 31557600000);
+            targetBalance.dailyUseTimeout = new Date(Date.parse(new Date) + 31557600000);
+            targetBalance.ignore = true;
+            targetBalance.admin = false;
+            await targetBalance.save().catch(console.error);
+            embedy.add(
+                `${interaction.user.tag} calls on the power of ${client.toDisplay("cat", "Dabloon Cat")}`,
+                `${client.toDisplay("cat", "Dabloon Cat")} looks down on his Champion with a smile.`,
+                "blue"
+            ).add(
+                client.toDisplay("alert", "Divine Smite!"),
+                `${client.toDisplay("cat", "Dabloon Cat")} strikes down ${target}!`,
+                "red"
+            );
         }
 
         await interaction.reply({
             embeds: embedy.list,
-            ephemeral: true,
+            ephemeral: secret,
         })
     }
 

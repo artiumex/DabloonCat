@@ -15,7 +15,7 @@ module.exports = async (client, attack_data) => {
     
     if (targetProf.ignore == true) return embedy.add(
         "Divine Intervention!",
-        "Dabloon Cat notices you attempt to attack his chosen, and intercepts your attack!",
+        `${client.toDisplay("cat", "Dabloon Cat")} notices you attempt to attack his chosen, and intercepts your attack!`,
         "hotpink"
     );
 
