@@ -41,11 +41,11 @@ module.exports = {
         
         storedBalance.balance -= amount;
         targetBalance.balance += amount;
-        storedBalance.save().catch(console.error);
-        targetBalance.save().catch(console.error);
+        await storedBalance.save().catch(console.error);
+        await targetBalance.save().catch(console.error);
         await interaction.reply({
-            content: `You've sent ${await client.toDisplay('balance', amount)} to ${target.tag}`,
+            content: `You've sent ${client.toDisplay('balance', amount)} to ${target.tag}`,
             // ephemeral: true,
-        })
+        });
     }
 }
