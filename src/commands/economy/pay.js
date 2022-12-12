@@ -30,7 +30,7 @@ module.exports = {
             content: "Stop trying to launder dabloons!!!",
             ephemeral: true,
         });
-        else if (amount > userStoredBalance.balance) return interaction.reply({
+        else if (amount > storedBalance.balance) return interaction.reply({
             content: `You do not have enough ${await client.toDisplay('money')} to send!`,
             ephemeral: true,
         });
