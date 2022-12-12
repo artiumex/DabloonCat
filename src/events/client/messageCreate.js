@@ -12,7 +12,7 @@ module.exports = {
         
         if (storedBalance.ignore == true) return client.dev ? console.log('ignoring') : "g";
 
-        if (storedBalance.party == "none") {
+        if (storedBalance.partyId == "none") {
             const randomAmount = (await client.roll(`lvld4 &a`, storedBalance)).total;
             storedBalance.balance = storedBalance.balance + randomAmount;
             storedBalance.xp = storedBalance.xp + 10;

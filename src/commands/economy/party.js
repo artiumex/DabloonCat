@@ -144,6 +144,10 @@ module.exports = {
                 content: `You are not already in a party! Use **/party create** to form a party.`,
                 ephemeral: true,
             });
+            if (false) return interaction.reply({
+                content: `You have the maximum amount of people in your party already!`,
+                ephemeral: true,
+            });
             const targetBalance = await client.fetchBalance(target.id);
             if (targetBalance.partyId !== "none") return interaction.reply({
                 content: `${target} is already in a party!`,
@@ -232,12 +236,17 @@ module.exports = {
             });
             const members = [];
             for (const i of storedParty.memberList) {
-                members.push(`${await client.users.fetch(i.id)}: ${i.role.display}`);
+                members.push({
+                    name: `${i.role.display}`,
+                    value: `<@${i.id}>`
+                })
             }
             embedy.add(
                 `${storedParty.name} Members`,
-                members.join('\n'),
-                "random"
+                `*${storedParty.description}*`,
+                "random",
+                members,
+                true
             );
             return finish();
         } else if (subcmd == "heal") {
