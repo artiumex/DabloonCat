@@ -22,11 +22,11 @@ module.exports = {
         const targetBalance = await client.fetchBalance(target);
         const amount = Math.floor(interaction.options.getInteger('amount'));
 
-        if (selectedUser.bot) return interaction.reply({
+        if (target.bot) return interaction.reply({
             content: "You cannot send dabloons to a bot!",
             ephemeral: true,
         });
-        else if (selectedUser.id == interaction.user.id) return interaction.reply({
+        else if (target.id == interaction.user.id) return interaction.reply({
             content: "Stop trying to launder dabloons!!!",
             ephemeral: true,
         });
@@ -44,7 +44,7 @@ module.exports = {
         storedBalance.save().catch(console.error);
         targetBalance.save().catch(console.error);
         await interaction.reply({
-            content: `You've sent ${await client.toDisplay('balance', amount)} to ${selectedUser.tag}`,
+            content: `You've sent ${await client.toDisplay('balance', amount)} to ${target.tag}`,
             // ephemeral: true,
         })
     }
