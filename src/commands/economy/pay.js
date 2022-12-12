@@ -17,7 +17,8 @@ module.exports = {
             .setMinValue(1)
         ),
     async execute(interaction, client) {
-        const userStoredBalance = await client.fetchBalance(interaction.user.id);
+        const storedBalance = await client.fetchBalance(interaction.user.id);
+        const targetBalance = await client.fetchBalance(interaction.user.id);
         const amount = Math.floor(interaction.options.getInteger('amount'));
         const selectedUser = interaction.options.getUser('target');
 
@@ -38,10 +39,10 @@ module.exports = {
             ephemeral: true,
         });
         
-        const selectedUserBalance = await client.fetchBalance(selectedUser.id);
-        await Balance.findOneAndUpdate({ _id: userStoredBalance._id }, { balance: userStoredBalance.balance - amount });
-        await Balance.findOneAndUpdate({ _id: selectedUserBalance._id }, { balance: selectedUserBalance.balance + amount });
-
+        storedBalance.balance -= amount;
+        targetBalance.balance += amount;
+        storedBalance.save().catch(console.error);
+        targetBalance.save().catch(console.error);
         await interaction.reply({
             content: `You've sent ${await client.toDisplay('balance', amount)} to ${selectedUser.tag}`,
             // ephemeral: true,

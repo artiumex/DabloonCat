@@ -14,7 +14,7 @@ module.exports = (client) => {
                 output = `${emoji.alert.text} **${value}** ${emoji.alert.text}`
                 break;
             case "cat":
-                output = `${emoji.cat.text}  **${value}**`
+                output = ` ${emoji.cat.text}  **${value}**`
                 break;
             default:
                 output = "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH";
