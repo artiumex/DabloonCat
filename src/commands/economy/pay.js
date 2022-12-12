@@ -17,10 +17,10 @@ module.exports = {
             .setMinValue(1)
         ),
     async execute(interaction, client) {
+        const target = interaction.options.getUser('target');
         const storedBalance = await client.fetchBalance(interaction.user.id);
-        const targetBalance = await client.fetchBalance(interaction.user.id);
+        const targetBalance = await client.fetchBalance(target);
         const amount = Math.floor(interaction.options.getInteger('amount'));
-        const selectedUser = interaction.options.getUser('target');
 
         if (selectedUser.bot) return interaction.reply({
             content: "You cannot send dabloons to a bot!",
