@@ -19,7 +19,7 @@ module.exports = {
     async execute(interaction, client) {
         const target = interaction.options.getUser('target');
         const storedBalance = await client.fetchBalance(interaction.user.id);
-        const targetBalance = await client.fetchBalance(target);
+        const targetBalance = await client.fetchBalance(target.id);
         const amount = Math.floor(interaction.options.getInteger('amount'));
 
         if (target.bot) return interaction.reply({
@@ -39,8 +39,8 @@ module.exports = {
             ephemeral: true,
         });
         
-        storedBalance.balance -= amount;
-        targetBalance.balance += amount;
+        storedBalance.balance = storedBalance.balance - amount;
+        targetBalance.balance = targetBalance.balance + amount;
         await storedBalance.save().catch(console.error);
         await targetBalance.save().catch(console.error);
         await interaction.reply({
