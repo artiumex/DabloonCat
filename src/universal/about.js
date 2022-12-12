@@ -60,7 +60,7 @@ module.exports = {
         return output;
     },
     classBonus(profile, attribute) {
-        const output = profile.class.bonuses[attribute];
+        const output = profile.class.bonuses[attribute] ? 3 : 0;
         return output ? profile.prof : 0;
     },
     mod(attr) {
